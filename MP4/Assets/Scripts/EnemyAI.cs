@@ -192,4 +192,9 @@ public class EnemyAI : MonoBehaviour {
     {
         Destroy(gameObject); //destroy enemy
     }
+
+    public void setHealth(int health)
+    {
+        maxStuns = health;
+    }
 }
