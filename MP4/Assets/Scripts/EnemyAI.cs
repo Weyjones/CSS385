@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour {
     state currentState;
 
     //init isMoving bool and turn speed
-    public bool isMoving = false;
+    private bool isMoving = true;
     public float turnSpeed = -.035f;
 
     // Use this for initialization
@@ -52,17 +52,17 @@ public class EnemyAI : MonoBehaviour {
         Eggs = GameObject.FindGameObjectsWithTag("Egg");
 
         //if space is pressed, toggle isMoving
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isMoving)
-            {
-                isMoving = false;
-            }
-            else
-            {
-                isMoving = true;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    if (isMoving)
+        //    {
+        //        isMoving = false;
+        //    }
+        //    else
+        //    {
+        //        isMoving = true;
+        //    }
+        //}
         
         if (currentState != state.Stunned)
         {

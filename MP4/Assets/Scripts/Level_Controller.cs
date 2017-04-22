@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Level_Controller : MonoBehaviour {
 
-    private EnemyManager EM = new EnemyManager();
+    private EnemyManager EM;
 
-    private int level = 1;
+    private int level = 0;
 
     private int maxLevel = 2;
 
@@ -14,26 +14,38 @@ public class Level_Controller : MonoBehaviour {
 
     public GameObject Hero;
 
+    bool playing = false;
+
 	// Use this for initialization
 	void Start () {
-		
+        EM = FindObjectOfType<EnemyManager>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        count = EM.getEnemyCount();
-        
-        if(count < 1)
+
+        if (playing == true)
         {
-            if(level < maxLevel)
+            count = EM.getEnemyCount();
+
+            if (count < 1)
             {
-                level++;
-                startLevel();
+                if (level < maxLevel)
+                {
+                    level++;
+                    startLevel();
+                }
+                else
+                {
+                    //Todo End Game, return to menu
+                }
             }
-            else
-            {
-                //Todo End Game, return to menu
-            }
+        }
+
+        //debug
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            playing = true;
         }
 	}
 
