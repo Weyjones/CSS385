@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyManager : MonoBehaviour {
 
@@ -23,6 +24,9 @@ public class EnemyManager : MonoBehaviour {
     GameObject scoreUI;
     Text scoreText;
 
+    public int EnemyCount;
+    public int EnemyHealth;
+
     // Use this for initialization
     void Start()
     {
@@ -33,6 +37,8 @@ public class EnemyManager : MonoBehaviour {
         //get EnemyText to update
         scoreUI = GameObject.Find("EnemyText");
         scoreText = scoreUI.GetComponent<Text>();
+
+        CreateWave(EnemyCount, EnemyHealth);
     }
 
     // Update is called once per frame
@@ -67,8 +73,8 @@ public class EnemyManager : MonoBehaviour {
         //    timer = 0;
 
         count = transform.childCount; //get count of children
-
-        scoreText.text = "Enemy Count: " + count; //update enemy text with count
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Menu"))
+            scoreText.text = "Enemy Count: " + count; //update enemy text with count
     }
 
     public void CreateWave(int num, int health)

@@ -1,32 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level_Controller : MonoBehaviour {
 
     private EnemyManager EM;
 
-    private int level = 0;
+    public int level;
 
     private int maxLevel = 2;
 
     private int count;
 
-    public GameObject Hero;
-
-    bool playing = false;
+    public bool playing = false;
 
 	// Use this for initialization
 	void Start () {
         EM = FindObjectOfType<EnemyManager>();
+        SceneManager.UnloadSceneAsync("Level_1");
+        SceneManager.UnloadSceneAsync("Level_2");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+        count = EM.getEnemyCount();
+
         if (playing == true)
         {
-            count = EM.getEnemyCount();
+            
 
             if (count < 1)
             {
@@ -42,26 +45,31 @@ public class Level_Controller : MonoBehaviour {
             }
         }
 
-        //debug
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(count > 0)
         {
             playing = true;
         }
-	}
+
+        //debug
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playing = true;
+        }
+    }
 
     void startLevel()
     {
         //Todo, add a wait timer between wave?
 
-        Hero.transform.position = new Vector3(0, 0, 0);
-
         switch (level)
         {
             case 1:
-                EM.CreateWave(5, 3);
+                SceneManager.LoadSceneAsync("Level_1");
+                playing = false;
                 break;
             case 2:
-                EM.CreateWave(10, 5);
+                SceneManager.LoadSceneAsync("Level_2");
+                playing = false;
                 break;
         }
     }
