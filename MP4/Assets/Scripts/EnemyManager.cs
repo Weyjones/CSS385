@@ -35,8 +35,11 @@ public class EnemyManager : MonoBehaviour {
         CameraWidth = GameObject.FindObjectOfType<Camera>().orthographicSize * GameObject.FindObjectOfType<Camera>().pixelWidth / GameObject.FindObjectOfType<Camera>().pixelHeight;
 
         //get EnemyText to update
-        scoreUI = GameObject.Find("EnemyText");
-        scoreText = scoreUI.GetComponent<Text>();
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Menu"))
+        {
+            scoreUI = GameObject.Find("EnemyText");
+            scoreText = scoreUI.GetComponent<Text>();
+        }
 
         CreateWave(EnemyCount, EnemyHealth);
     }

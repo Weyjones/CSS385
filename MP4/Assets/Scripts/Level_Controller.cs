@@ -18,8 +18,6 @@ public class Level_Controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         EM = FindObjectOfType<EnemyManager>();
-        SceneManager.UnloadSceneAsync("Level_1");
-        SceneManager.UnloadSceneAsync("Level_2");
 	}
 	
 	// Update is called once per frame
