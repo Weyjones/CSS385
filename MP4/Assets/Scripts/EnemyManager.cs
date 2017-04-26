@@ -20,6 +20,10 @@ public class EnemyManager : MonoBehaviour {
     public bool isMoving = false;
     public int count;
 
+    //AudioSource tools
+    private int previousCount;
+    public AudioSource deathSound;
+
     //init enemy count text
     GameObject scoreUI;
     Text scoreText;
@@ -40,8 +44,9 @@ public class EnemyManager : MonoBehaviour {
             scoreUI = GameObject.Find("EnemyText");
             scoreText = scoreUI.GetComponent<Text>();
         }
-
+        deathSound = GetComponent<AudioSource>();
         CreateWave(EnemyCount, EnemyHealth);
+        previousCount = EnemyCount;
     }
 
     // Update is called once per frame
@@ -76,6 +81,11 @@ public class EnemyManager : MonoBehaviour {
         //    timer = 0;
 
         count = transform.childCount; //get count of children
+        if (count < previousCount)
+        {
+            deathSound.Play();
+            previousCount = count;
+        }
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Menu"))
             scoreText.text = "Enemy Count: " + count; //update enemy text with count
     }

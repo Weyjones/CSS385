@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour {
     //init isMoving bool and turn speed
     private bool isMoving = true;
     public float turnSpeed = -.035f;
+    //public AudioSource deathSound;
 
     // Use this for initialization
     void Start () {
@@ -40,10 +41,13 @@ public class EnemyAI : MonoBehaviour {
         speed = 0f;
         this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         currentState = state.Normal;
+        
 
         //get player object
         player = GameObject.FindGameObjectWithTag("Hero");
 
+        //Load Death Sound
+        //deathSound = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -102,6 +106,7 @@ public class EnemyAI : MonoBehaviour {
                 }
                 else //else destroy the enemy
                 {
+                //    deathSound.Play();
                     destroyEnemy();
                     DestroyObject(Eggs[i]);
                 }
@@ -190,6 +195,7 @@ public class EnemyAI : MonoBehaviour {
 
     private void destroyEnemy()
     {
+        //death_sound.Play(); // Play Death sound
         Destroy(gameObject); //destroy enemy
     }
 
