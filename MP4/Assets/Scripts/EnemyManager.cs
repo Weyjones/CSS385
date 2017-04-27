@@ -31,6 +31,12 @@ public class EnemyManager : MonoBehaviour {
     public int EnemyCount;
     public int EnemyHealth;
 
+    //
+    public int totalEnemyCount;
+    public int enemiesDestroyed = 0;
+    private float timeThusFar = 0;
+    
+
     // Use this for initialization
     void Start()
     {
@@ -47,10 +53,16 @@ public class EnemyManager : MonoBehaviour {
         deathSound = GetComponent<AudioSource>();
         CreateWave(EnemyCount, EnemyHealth);
         previousCount = EnemyCount;
+
+
+        totalEnemyCount = EnemyCount;
+        Debug.Log(totalEnemyCount);
     }
 
     // Update is called once per frame
     void Update() {
+
+        timeThusFar += Time.smoothDeltaTime;
 
         //if space is pressed, toggle isMoving
         //if (Input.GetKeyDown(KeyCode.Space))
@@ -85,9 +97,16 @@ public class EnemyManager : MonoBehaviour {
         {
             deathSound.Play();
             previousCount = count;
+            enemiesDestroyed++;
         }
+
+        
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Menu"))
-            scoreText.text = "Enemy Count: " + count; //update enemy text with count
+        {
+            //scoreText.text = "Enemy Count: " + count; //update enemy text with count
+            scoreText.text = "Faces Dismissed / Time Elapsed: " + Mathf.Round((enemiesDestroyed / timeThusFar) * 1000f) / 1000f;
+        }
+            
     }
 
     public void CreateWave(int num, int health)

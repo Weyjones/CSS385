@@ -25,6 +25,9 @@ public class HeroController : MonoBehaviour {
     Text eggText;
     int count;
 
+    //Sound variables
+    public AudioSource shootSound;
+
     // Use this for initialization
     void Start () {
 
@@ -35,6 +38,9 @@ public class HeroController : MonoBehaviour {
         //get egg text to update
         eggUI = GameObject.Find("EggText");
         eggText = eggUI.GetComponent<Text>();
+
+        //get sound
+        shootSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -85,6 +91,7 @@ public class HeroController : MonoBehaviour {
             if (shotTimer > shotMaxTimer) //if timer reaches shot max timer, spawn new egg and reset timer
             {
                 Instantiate(Prefab, new Vector3(transform.position.x, transform.position.y, 0), transform.rotation);
+                shootSound.Play();
                 shotTimer = 0;
             }
         }
@@ -112,6 +119,7 @@ public class HeroController : MonoBehaviour {
 
         //update egg count text
         count = GameObject.FindGameObjectsWithTag("Egg").Length;
-        eggText.text = "Egg Count: " + count;
+        //eggText.text = "Egg Count: " + count;
+        eggText.text = "";
     }
 }

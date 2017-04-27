@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Level_Controller : MonoBehaviour {
 
@@ -15,13 +16,33 @@ public class Level_Controller : MonoBehaviour {
 
     public bool playing = false;
 
+    private float levelTime = 0f;
+
+    //Text for the end of the level
+    public Text endLevelTitle;
+    public Text endLevelDescription;
+
 	// Use this for initialization
 	void Start () {
         EM = FindObjectOfType<EnemyManager>();
-	}
+
+        if (endLevelDescription != null && endLevelTitle != null)
+        {
+            endLevelTitle.enabled = false;
+            endLevelDescription.enabled = false;
+        } else
+        {
+
+            Debug.Log("Text does not exist");
+        }
+        
+}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (playing)
+            levelTime += Time.smoothDeltaTime;
 
         count = EM.getEnemyCount();
 
@@ -38,7 +59,8 @@ public class Level_Controller : MonoBehaviour {
                 }
                 else
                 {
-                    //Todo End Game, return to menu
+                    playing = false;
+                    StartCoroutine(EndLevel("Menu"));
                 }
             }
         }
@@ -47,14 +69,93 @@ public class Level_Controller : MonoBehaviour {
         {
             playing = true;
         }
+        
 
-        //debug
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown("escape"))
         {
-            playing = true;
+            SceneManager.LoadSceneAsync("Menu");
+            playing = false;
         }
     }
 
+    void startLevel()
+    {
+        //Todo, add a wait timer between wave?
+
+        switch (level)
+        {
+            case 1:
+                SceneManager.LoadSceneAsync("Level_1");
+                playing = false;
+                break;
+            case 2:
+                
+                playing = false;
+                StartCoroutine(EndLevel("Level_2"));
+                
+                break;
+        }
+    }
+
+    IEnumerator EndLevel(string levelName)
+    {
+        
+        endLevelTitle.enabled = true;
+        string victoryText = "";
+        if (levelName == "Level_2")
+        {
+            victoryText = "LEVEL I COMPLETE";
+        } else
+        {
+            victoryText = "LEVEL II COMPLETE";
+        }
+        
+        endLevelTitle.text = victoryText;
+        
+        
+        yield return new WaitForSeconds(1);
+
+
+        
+        endLevelDescription.enabled = true;
+
+        float time = Mathf.Round((levelTime * 1000f)) / 1000f;
+
+        float enemyRatio = EM.totalEnemyCount / levelTime;
+        enemyRatio = Mathf.Round((enemyRatio * 1000f)) / 1000f;
+
+        endLevelDescription.text = "You won by dismissing " +
+            EM.totalEnemyCount + " faces in " + time + " seconds!" +
+            "\n" + "\n" + "Your score/ratio is " + enemyRatio + 
+            " smiles dismissed per second!";
+        yield return new WaitForSeconds(4);
+
+        if (levelName != "Menu")
+        {
+            endLevelDescription.text = "Starting next level in three...";
+            yield return new WaitForSeconds(1.5f);
+            endLevelDescription.text = "Next level in two...";
+            yield return new WaitForSeconds(1.5f);
+            endLevelDescription.text = "Next level in one!";
+            yield return new WaitForSeconds(1f);
+
+            SceneManager.LoadSceneAsync(levelName);
+        }
+        else
+        {
+            endLevelDescription.text = "Returning to main menu in three...";
+            yield return new WaitForSeconds(1.5f);
+            endLevelDescription.text = "Main menu in two...";
+            yield return new WaitForSeconds(1.5f);
+            endLevelDescription.text = "Main menu in one!";
+            yield return new WaitForSeconds(1f);
+
+            SceneManager.LoadSceneAsync(levelName);
+        }
+        
+    }
+
+    /*
     void startLevel()
     {
         //Todo, add a wait timer between wave?
@@ -70,5 +171,12 @@ public class Level_Controller : MonoBehaviour {
                 playing = false;
                 break;
         }
+    }*/
+
+    public void StartPlaying()
+    {
+        playing = true;
     }
+
+    
 }
