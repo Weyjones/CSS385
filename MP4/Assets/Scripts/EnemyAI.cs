@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour {
 
     //init Egg array to keep track of active eggs
     GameObject[] Eggs;
+    public AudioSource hitSound;
     //init player varaible to track hit box collision
     GameObject player;
 
@@ -41,7 +42,7 @@ public class EnemyAI : MonoBehaviour {
         speed = 0f;
         this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         currentState = state.Normal;
-        
+        hitSound = GetComponent<AudioSource>();
 
         //get player object
         player = GameObject.FindGameObjectWithTag("Hero");
@@ -100,6 +101,7 @@ public class EnemyAI : MonoBehaviour {
                 {
                     currentState = state.Stunned;
                     DestroyObject(Eggs[i]);
+                    hitSound.Play();
                     timesStunned++;
                     stunDuration = 0f;
                     speed = 0;
